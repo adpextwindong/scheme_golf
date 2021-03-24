@@ -72,3 +72,21 @@
 
 (define (cubert x)
   (cubert-iter 1.0 x))
+
+;Generalization of rooting
+;Section 1.3.4 apparently will deal with this.
+
+(define (genroot-iter impf guess x)
+  (let ((improved (impf guess x)))
+  (if (good-enough2? guess (absdelta guess improved))
+    guess
+    (genroot-iter impf improved x))))
+
+(define improve2 improve)
+(define improve3 improve_cubed)
+
+(define (rootn x n)
+  (let ((improvefn (cond ((= n 2) improve2)
+                         ((= n 3) improve3)
+                         (else (lambda (x y) (raise 'unimpl)))))) ;not sure the idiomatic way to do this
+  (genroot-iter improvefn 1.0 x)))

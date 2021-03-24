@@ -55,3 +55,20 @@
 
 (define (sqrt2_unsugared x)
   (sqrt-iter2_unsugared 1.0 x))
+
+;Exercise 1.8
+
+(define (improve_cubed guess x)
+    (/ (+ (/ x (square guess)) (* 2 guess))
+       3))
+(define (absdelta guess improved)
+  (abs (- guess improved)))
+
+(define (cubert-iter guess x)
+  (let ((improved (improve_cubed guess x)))
+  (if (good-enough2? guess (absdelta guess improved))
+    guess
+    (cubert-iter improved x))))
+
+(define (cubert x)
+  (cubert-iter 1.0 x))

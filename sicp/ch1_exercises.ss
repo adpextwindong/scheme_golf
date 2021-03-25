@@ -90,3 +90,22 @@
                          ((= n 3) improve3)
                          (else (lambda (x y) (raise 'unimpl)))))) ;not sure the idiomatic way to do this
   (genroot-iter improvefn 1.0 x)))
+
+
+;Generate the respective root function given an improve fn and delta predicate
+(define (genroot-iter2 impf deltapred)
+  (letrec ((iter-inner
+  (lambda (guess x)
+    (let ((improved (impf guess x)))
+    (if (good-enough2? guess (deltapred guess improved))
+      guess
+      (iter-inner improved x))))))
+  iter-inner))
+
+;Usage ((genroot-iter2 improve3 absdelta) 1.0 27)
+
+(define (rootn2 x n)
+  (let ((improvefn (cond ((= n 2) improve2)
+                         ((= n 3) improve3)
+                         (else (lambda (x y) (raise 'unimpl))))))
+  ((genroot-iter2 improvefn absdelta) 1.0 x)))

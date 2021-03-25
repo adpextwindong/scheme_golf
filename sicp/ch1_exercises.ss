@@ -105,7 +105,8 @@
 ;Usage ((genroot-iter2 improve3 absdelta) 1.0 27)
 
 (define (rootn2 x n)
-  (let ((improvefn (cond ((= n 2) improve2)
+  (let* ((improvefn (cond ((= n 2) improve2)
                          ((= n 3) improve3)
-                         (else (lambda (x y) (raise 'unimpl))))))
-  ((genroot-iter2 improvefn absdelta) 1.0 x)))
+                         (else (lambda (x y) (raise 'unimpl)))))
+         (root-iter (genroot-iter2 improvefn absdelta)))
+  (root-iter 1.0 x)))
